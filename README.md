@@ -1,0 +1,2 @@
+# lofinance
+Fava server + sync
