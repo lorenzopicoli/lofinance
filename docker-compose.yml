@@ -1,0 +1,24 @@
+version: '3.8'
+# volumes:
+#   beans:
+services:
+  beanfinance:
+    container_name: lofinance
+    build:
+      context: .
+      # dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+      - '7500:7500'
+    environment:
+      - BEANCOUNT_FILE=/beans/main.beancount
+      - PAISA_CONFIG=/configs/paisa.yaml
+
+    env_file:
+      - .env
+    # For local testing, uncomment the following... though I haven't tested this :)
+    # volumes:
+    # - /home/lorenzo/.../beanfinance/beans:/beans
+    # - /home/lorenzo/.../beanfinance/tools:/importers
+    # - /home/lorenzo/.../beanfinance/data/categorizations:/categorizations
+    # - /home/lorenzo/.../beanfinance/tmp-import:/import
