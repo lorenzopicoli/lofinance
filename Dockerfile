@@ -4,7 +4,11 @@ FROM debian:stable-slim
 RUN apt-get update && apt-get install -y \
     git \
     python3 \
-    python3-pip
+    python3-pip \
+    build-essential \
+    nghttp2 \
+    libnghttp2-dev \
+    libssl-dev
 
 # Install Python packages
 RUN pip3 install fava beancount --break-system-packages
@@ -23,7 +27,13 @@ git push\n\
 RUN echo '#!/bin/bash\n\
 # Clone the repository if it doesn'"'"'t exist\n\
 if [ ! -d "/beans/.git" ]; then\n\
-    git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@${GIT_REPO_URL#https://} /beans\n\
+    # Depending on the USE_HTTPS environment variable, use the appropriate URL\n\
+    if [ "${USE_HTTPS}" = "true" ]; then\n\
+        URL="https://${GIT_USERNAME}:${GIT_PASSWORD}@${GIT_REPO_URL#https://}"\n\
+    else\n\
+        URL="http://${GIT_USERNAME}:${GIT_PASSWORD}@${GIT_REPO_URL#http://}"\n\
+    fi\n\
+    git clone ${URL} /beans\n\
 fi\n\
 \n\
 # Configure git\n\
@@ -37,7 +47,7 @@ git config --global user.name "${GIT_NAME}"\n\
 done) &\n\
 \n\
 # Start Fava\n\
-fava --host=0.0.0.0 --debug /beans/beans/main.beancount\n\
+fava --host=0.0.0.0 /beans/beans/main.beancount\n\
 ' > /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/entrypoint.sh
 
