@@ -47,7 +47,7 @@ git config --global user.name "${GIT_NAME}"\n\
 done) &\n\
 \n\
 # Start Fava\n\
-fava --host=0.0.0.0 /beans/beans/main.beancount\n\
+fava --host=0.0.0.0 --debug /beans/beans/main.beancount\n\
 ' > /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/entrypoint.sh
 
