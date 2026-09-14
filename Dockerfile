@@ -10,8 +10,10 @@ RUN apt-get update && apt-get install -y \
     libnghttp2-dev \
     libssl-dev
 
-# Install Python packages
-RUN pip3 install fava beancount --break-system-packages
+# Install a reproducible Fava runtime, including the reusable dashboard host.
+COPY requirements.txt /tmp/lofinance-requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages \
+    -r /tmp/lofinance-requirements.txt
 
 # Create update script
 RUN echo '#!/bin/bash\n\
@@ -46,8 +48,8 @@ git config --global user.name "${GIT_NAME}"\n\
     sleep 10\n\
 done) &\n\
 \n\
-# Start Fava\n\
-fava --host=0.0.0.0 --debug /beans/beans/main.beancount\n\
+# Start Fava. PYTHONPATH lets Fava import reporting code kept in beanfinance.\n\
+PYTHONPATH=/beans exec fava --host=0.0.0.0 /beans/beans/main.beancount\n\
 ' > /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/entrypoint.sh
 
