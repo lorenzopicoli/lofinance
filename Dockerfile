@@ -31,7 +31,7 @@ RUN echo '#!/bin/bash\n\
 if [ ! -d "/beans/.git" ]; then\n\
     # Depending on the USE_HTTPS environment variable, use the appropriate URL\n\
     if [ "${USE_HTTPS}" = "true" ]; then\n\
-        URL="https://${GIT_USERNAME}:${GIT_PASSWORD}@${GIT_REPO_URL#http://}"\n\
+        URL="https://${GIT_USERNAME}:${GIT_PASSWORD}@${GIT_REPO_URL#https://}"\n\
     else\n\
         URL="http://${GIT_USERNAME}:${GIT_PASSWORD}@${GIT_REPO_URL#http://}"\n\
     fi\n\
