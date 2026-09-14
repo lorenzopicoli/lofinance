@@ -49,7 +49,7 @@ git config --global user.name "${GIT_NAME}"\n\
 done) &\n\
 \n\
 # Start Fava. PYTHONPATH lets Fava import reporting code kept in beanfinance.\n\
-PYTHONPATH=/beans exec fava --host=0.0.0.0 /beans/beans/main.beancount\n\
+PYTHONPATH=/beans exec fava --host=0.0.0.0 /beans/main.beancount\n\
 ' > /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/entrypoint.sh
 
